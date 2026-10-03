@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<title>A store — Fashion</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#050505;--white:#fff;--soft:#f4f4f4;--gray:#777;--line:#e8e8e8}
+html{scroll-behavior:smooth}
+.category-bar{max-width:1180px;margin:0 auto;padding:18px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;background:#fafafa;position:sticky;top:70px;z-index:20}
+.category-bar::-webkit-scrollbar{display:none}
+.category-bar a{white-space:nowrap;text-decoration:none;color:#111;background:#fff;border:1px solid #ddd;border-radius:13px;padding:10px 15px;font-size:13px;font-weight:800;transition:.2s}
+.category-bar a:hover{background:#000;color:#fff;border-color:#000}
+body{font-family:Cairo,Arial,sans-serif;background:#fafafa;color:#111;overflow-x:hidden}
+button,a{font:inherit}button{cursor:pointer}
+header{height:70px;background:rgba(5,5,5,.94);backdrop-filter:blur(12px);color:#fff;position:sticky;top:0;z-index:50}
+.nav{max-width:1180px;height:100%;margin:auto;padding:0 18px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:27px;font-weight:900;letter-spacing:1px}
+.logo span{color:#bbb}
+.navlinks{display:flex;gap:24px}.navlinks a{color:#ddd;text-decoration:none;font-size:14px}.navlinks a:hover{color:#fff}
+.cart-btn{border:1px solid #444;background:#fff;color:#000;padding:9px 14px;border-radius:12px;font-weight:800}
+.hero{min-height:560px;background:#090909;color:#fff;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:#222;filter:blur(100px);left:-160px;top:-120px;opacity:.7}
+.hero-content{max-width:1180px;width:100%;margin:auto;padding:70px 22px;position:relative;z-index:1}
+.badge{display:inline-block;border:1px solid #444;border-radius:30px;padding:7px 14px;color:#ddd;font-size:13px;margin-bottom:18px;animation:fadeUp .7s}
+.hero h1{font-size:clamp(43px,9vw,82px);line-height:1.03;font-weight:900;max-width:700px;animation:fadeUp .8s}
+.hero h1 span{color:#aaa}
+.hero p{color:#bbb;margin:20px 0 28px;max-width:500px;line-height:1.9;animation:fadeUp 1s}
+.hero-btn{display:inline-flex;background:#fff;color:#000;text-decoration:none;padding:14px 24px;border-radius:13px;font-weight:900;transition:.25s;animation:fadeUp 1.1s}
+.hero-btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px #fff2}
+.section{max-width:1180px;margin:auto;padding:70px 18px}
+.section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:28px}
+.section h2{font-size:31px;font-weight:900}.section-head p{color:#777;font-size:13px}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:.3s;position:relative}
+.card:hover{transform:translateY(-7px);box-shadow:0 18px 45px #00000012}
+.pic{height:320px;background:#e9e9e9;overflow:hidden;position:relative}
+.pic img{width:100%;height:100%;object-fit:cover;transition:.6s}
+.card:hover .pic img{transform:scale(1.06)}
+.tag{position:absolute;top:12px;right:12px;background:#000;color:#fff;border-radius:20px;padding:5px 10px;font-size:11px;font-weight:800}
+.card-body{padding:15px}.card h3{font-size:17px;margin-bottom:4px}.sub{font-size:12px;color:#888}
+.price{font-weight:900;font-size:18px;margin:10px 0 13px}
+.actions{display:flex;gap:8px}.details{flex:1;border:1px solid #ddd;background:#fff;border-radius:10px;padding:10px;text-align:center;text-decoration:none;color:#111;font-size:13px;font-weight:800}.add{flex:1;border:0;background:#000;color:#fff;border-radius:10px;padding:10px;font-weight:800;font-size:13px}
+.features{background:#050505;color:#fff}.features-grid{max-width:1180px;margin:auto;padding:48px 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:25px}.feature{display:flex;gap:14px;align-items:flex-start}.icon{width:45px;height:45px;border:1px solid #444;border-radius:13px;display:grid;place-items:center}.feature h3{font-size:15px}.feature p{color:#999;font-size:12px;margin-top:3px}
+.overlay{position:fixed;inset:0;background:#0009;z-index:100;display:none;opacity:0;transition:.25s}.overlay.show{display:block;opacity:1}
+.drawer{position:absolute;right:0;top:0;width:min(94%,430px);height:100%;background:#fff;padding:20px;transform:translateX(100%);transition:.35s;overflow:auto}.overlay.show .drawer{transform:translateX(0)}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:16px}.close{border:0;background:#eee;width:38px;height:38px;border-radius:11px}
+.cart-item{display:flex;gap:11px;padding:15px 0;border-bottom:1px solid #eee}.mini{width:70px;height:80px;object-fit:cover;border-radius:10px}.ci{flex:1}.ci h4{font-size:14px}.ci p{font-size:12px;color:#777}.del{border:0;background:none;color:#999;font-size:12px;margin-top:7px}
+.total{display:flex;justify-content:space-between;font-size:19px;font-weight:900;margin:20px 0}.wa{display:block;text-align:center;background:#000;color:#fff;text-decoration:none;padding:14px;border-radius:13px;font-weight:900}
+.empty{text-align:center;color:#888;padding:50px 10px}
+.modal{position:fixed;inset:0;background:#000b;z-index:110;display:none;align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}
+.detail{background:#fff;width:min(950px,100%);max-height:92vh;overflow:auto;border-radius:24px;display:grid;grid-template-columns:1fr 1fr;position:relative;animation:pop .3s}
+.detail-img{min-height:500px;background:#eee}.detail-img img{width:100%;height:100%;object-fit:cover}.detail-info{padding:38px}.detail-info h2{font-size:32px;margin:10px 0}.detail-info .bigprice{font-size:25px;font-weight:900;margin:16px 0 24px}.label{font-size:13px;font-weight:800;margin:17px 0 8px}.opts{display:flex;gap:8px;flex-wrap:wrap}.opt{border:1px solid #ddd;background:#fff;padding:9px 15px;border-radius:10px}.opt.active{background:#000;color:#fff;border-color:#000}.close-detail{position:absolute;top:14px;right:14px;border:0;background:#fff;width:40px;height:40px;border-radius:50%;box-shadow:0 4px 15px #0002;z-index:2}
+.detail-add{width:100%;border:0;background:#000;color:#fff;padding:15px;border-radius:12px;font-weight:900;margin-top:25px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);background:#000;color:#fff;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;z-index:200;transition:.3s;font-size:13px}.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{background:#000;color:#aaa;text-align:center;padding:35px 15px;font-size:12px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@media(max-width:850px){.products{grid-template-columns:repeat(2,1fr)}.pic{height:280px}.navlinks{display:none}.detail{grid-template-columns:1fr}.detail-img{min-height:360px;height:45vh}.features-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.hero{min-height:510px}.products{gap:11px}.pic{height:220px}.card-body{padding:12px}.card h3{font-size:15px}.price{font-size:16px}.actions{flex-direction:column}.details,.add{width:100%}.section{padding:50px 12px}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="nav">
+  <div class="logo">A <span>store</span></div>
+  <nav class="navlinks"><a href="#home">الرئيسية</a><a href="#products">المنتجات</a><a href="#pants">البناطيل</a><a href="#hoodies">هوديز</a><a href="#shoes">شوز</a></nav>
+  <button class="cart-btn" onclick="openCart()">🛒 السلة <b id="count">0</b></button>
+</div>
+</header>
+
+<section class="hero" id="home">
+<div class="hero-content">
+  <div class="badge">NEW COLLECTION • 2026</div>
+  <h1>لبسك.<br><span>ستايلك.</span><br>اختيارك.</h1>
+  <p>تيشيرتات بتصميمات بسيطة وعصرية. اختار القطعة اللي تناسبك واطلبها مباشرة عبر واتساب.</p>
+  <a class="hero-btn" href="#products">اكتشف المجموعة ↓</a>
+</div>
+</section>
+
+<div class="category-bar">
+  <a href="#products">👕 تيشيرتات</a>
+  <a href="#pants">👖 بناطيل</a>
+  <a href="#hoodies">🧥 هوديز</a>
+  <a href="#sweatshirts">🧶 سويت شيرت</a>
+  <a href="#caps">🧢 كابات</a>
+  <a href="#shoes">👟 شوز</a>
+</div>
+
+<section class="section" id="products">
+<div class="section-head"><div><h2>المجموعة الجديدة</h2><p>اختيارات A store لهذا الموسم</p></div></div>
+<div class="products" id="productsGrid"></div>
+</section>
+
+
+<section class="section" id="pants">
+  <div class="section-head">
+    <div><h2>البناطيل</h2><p>جينز وميلتون — اختار الستايل اللي يناسبك</p></div>
+  </div>
+  <div class="products" id="pantsGrid"></div>
+</section>
+
+
+<section class="section" id="hoodies">
+  <div class="section-head"><div><h2>هوديز</h2><p>قطع دافئة بستايل عصري</p></div></div>
+  <div class="products" id="hoodiesGrid"></div>
+</section>
+
+<section class="section" id="sweatshirts">
+  <div class="section-head"><div><h2>سويت شيرتات</h2><p>ستايل بسيط ومريح</p></div></div>
+  <div class="products" id="sweatshirtsGrid"></div>
+</section>
+
+<section class="section" id="caps">
+  <div class="section-head"><div><h2>كابات</h2><p>كمّل اللوك بتفصيلة بسيطة</p></div></div>
+  <div class="products" id="capsGrid"></div>
+</section>
+
+<section class="section" id="shoes">
+  <div class="section-head"><div><h2>شوز</h2><p>اختيارات مناسبة للستايل اليومي</p></div></div>
+  <div class="products" id="shoesGrid"></div>
+</section>
+
+<section class="features" id="about">
+<div class="features-grid">
+ <div class="feature"><div class="icon">🚚</div><div><h3>توصيل للباب</h3><p>اطلب أونلاين وتابع طلبك بسهولة.</p></div></div>
+ <div class="feature"><div class="icon">✨</div><div><h3>ستايل عصري</h3><p>تصميمات بسيطة تناسب كل يوم.</p></div></div>
+ <div class="feature"><div class="icon">💬</div><div><h3>طلب سريع</h3><p>تواصل معنا مباشرة عبر واتساب.</p></div></div>
+</div>
+</section>
+
+<footer>A store © 2026 — All rights reserved</footer>
+
+<div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
+ <aside class="drawer">
+  <div class="drawer-head"><h2>سلة الطلب 🛒</h2><button class="close" onclick="closeCart()">✕</button></div>
+  <div id="cartItems"></div>
+  <div class="total"><span>الإجمالي</span><span><b id="total">0</b> ج.م</span></div>
+  <a class="wa" id="waLink" target="_blank">إتمام الطلب عبر واتساب</a>
+ </aside>
+</div>
+
+<div class="modal" id="modal">
+ <div class="detail">
+  <button class="close-detail" onclick="closeDetail()">✕</button>
+  <div class="detail-img"><img id="dImg" src="" alt=""></div>
+  <div class="detail-info">
+   <small id="dSub"></small><h2 id="dName"></h2><div class="bigprice" id="dPrice"></div>
+   <p id="dDesc" style="color:#777;line-height:1.9;font-size:14px"></p>
+   <div class="label">المقاس</div><div class="opts" id="sizes"></div>
+   <div class="label">اللون</div><div class="opts" id="colors"></div>
+   <button class="detail-add" onclick="addDetail()">أضف للسلة</button>
+  </div>
+ </div>
+</div>
+<div class="toast" id="toast">تمت الإضافة للسلة ✓</div>
+
+<script>
+const WHATSAPP_NUMBER="201035719063"; // غيّر هذا إلى رقم واتساب المتجر
+const products=[
+ {id:1,name:"Classic Black",sub:"T-Shirt • Essential Collection",price:450,color:"أسود",type:"تيشيرت",img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85",desc:"تيشيرت أساسي بتصميم نظيف وبسيط، مناسب للإطلالات اليومية."},
+ {id:2,name:"White Essential",sub:"T-Shirt • Essential Collection",price:400,color:"أبيض",type:"تيشيرت",img:"https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=900&q=85",desc:"تصميم أبيض كلاسيكي تقدر تنسقه مع أي ستايل."},
+ {id:3,name:"Oversize Black",sub:"T-Shirt • Oversize Fit",price:550,color:"أسود",type:"تيشيرت",img:"https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=85",desc:"قصة Oversize مريحة بمظهر عصري وشبابي."},
+ {id:4,name:"A Store Edition",sub:"T-Shirt • Limited Edition",price:600,color:"أبيض",type:"تيشيرت",img:"https://images.unsplash.com/photo-1583743814966-8936f37f4678?auto=format&fit=crop&w=900&q=85",desc:"إصدار مميز من A store بتفاصيل بسيطة وحضور واضح."},
+
+ {id:5,name:"Black Straight Jeans",sub:"Jeans • Straight Fit",price:850,color:"أسود",type:"جينز",img:"https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&q=85",desc:"جينز أسود بقصة Straight مريحة وسهلة التنسيق."},
+ {id:6,name:"Blue Classic Jeans",sub:"Jeans • Regular Fit",price:800,color:"أزرق",type:"جينز",img:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=85",desc:"جينز أزرق كلاسيكي مناسب للوك اليومي."},
+ {id:7,name:"Light Blue Wide Jeans",sub:"Jeans • Wide Fit",price:900,color:"أزرق فاتح",type:"جينز",img:"https://images.unsplash.com/photo-1602293589930-45aad59ba3ab?auto=format&fit=crop&w=900&q=85",desc:"قصة Wide عصرية بلون أزرق فاتح لإطلالة مختلفة."},
+ {id:8,name:"Grey Cargo Jeans",sub:"Jeans • Cargo Fit",price:950,color:"رمادي",type:"جينز",img:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=900&q=85",desc:"جينز Cargo رمادي بجيوب متعددة وستايل شبابي."},
+
+ {id:9,name:"Black Milton Jogger",sub:"Milton • Jogger Fit",price:650,color:"أسود",type:"ميلتون",img:"https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=900&q=85",desc:"بنطلون ميلتون أسود بقصة Jogger، مناسب للراحة والحركة."},
+ {id:10,name:"Grey Milton Classic",sub:"Milton • Regular Fit",price:620,color:"رمادي",type:"ميلتون",img:"https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=85",desc:"ميلتون رمادي بتصميم بسيط وعملي للاستخدام اليومي."},
+ {id:11,name:"Beige Milton Wide",sub:"Milton • Wide Fit",price:700,color:"بيج",type:"ميلتون",img:"https://images.unsplash.com/photo-1506629905607-d9c9e2c4a4f1?auto=format&fit=crop&w=900&q=85",desc:"قصة Wide بلون بيج هادئ، مناسبة للستايل العصري."},
+ {id:12,name:"Navy Milton Jogger",sub:"Milton • Jogger Fit",price:680,color:"كحلي",type:"ميلتون",img:"https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=85",desc:"ميلتون كحلي بقصة Jogger ولوك رياضي بسيط."},
+
+ {id:13,name:"Black Essential Hoodie",sub:"Hoodie • Essential",price:850,color:"أسود",type:"هودي",img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=85",desc:"هودي أسود بسيط بستايل يومي مريح."},
+ {id:14,name:"Grey Oversize Hoodie",sub:"Hoodie • Oversize",price:900,color:"رمادي",type:"هودي",img:"https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=900&q=85",desc:"هودي رمادي بقصة Oversize لمظهر عصري."},
+ {id:15,name:"Cream Hoodie",sub:"Hoodie • Premium",price:950,color:"كريمي",type:"هودي",img:"https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=900&q=85",desc:"هودي كريمي بتصميم هادئ وسهل التنسيق."},
+
+ {id:16,name:"Black Crewneck",sub:"Sweatshirt • Classic",price:700,color:"أسود",type:"سويت شيرت",img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=900&q=85",desc:"سويت شيرت أسود بقصة كلاسيكية ومريحة."},
+ {id:17,name:"Grey Minimal Sweatshirt",sub:"Sweatshirt • Minimal",price:720,color:"رمادي",type:"سويت شيرت",img:"https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=85",desc:"سويت شيرت رمادي بتصميم Minimal."},
+ {id:18,name:"Navy Sweatshirt",sub:"Sweatshirt • Essential",price:740,color:"كحلي",type:"سويت شيرت",img:"https://images.unsplash.com/photo-1627225924765-552d49cf47ad?auto=format&fit=crop&w=900&q=85",desc:"سويت شيرت كحلي للوك يومي بسيط."},
+
+ {id:19,name:"A Store Black Cap",sub:"Cap • Classic",price:300,color:"أسود",type:"كاب",img:"https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=900&q=85",desc:"كاب أسود بتصميم كلاسيكي وشعار A store."},
+ {id:20,name:"Beige Street Cap",sub:"Cap • Street",price:320,color:"بيج",type:"كاب",img:"https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=900&q=85",desc:"كاب بيج مناسب للستايل الكاجوال."},
+ {id:21,name:"Grey Sport Cap",sub:"Cap • Sport",price:300,color:"رمادي",type:"كاب",img:"https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?auto=format&fit=crop&w=900&q=85",desc:"كاب رمادي خفيف للوك الرياضي اليومي."},
+
+ {id:22,name:"Black Runner",sub:"Shoes • Everyday",price:1200,color:"أسود",type:"شوز",img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85",desc:"شوز أسود بتصميم رياضي مناسب للاستخدام اليومي."},
+ {id:23,name:"White Street Sneaker",sub:"Shoes • Street",price:1350,color:"أبيض",type:"شوز",img:"https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=85",desc:"سنيكرز أبيض بتصميم نظيف للستايل الكاجوال."},
+ {id:24,name:"Grey Urban Sneaker",sub:"Shoes • Urban",price:1400,color:"رمادي",type:"شوز",img:"https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=900&q=85",desc:"سنيكرز رمادي بستايل Urban عصري."}
+];
+let cart=JSON.parse(localStorage.getItem("astore_cart")||"[]"),current=null,dSize="M",dColor="أسود";
+function productCard(p){
+return `<div class="card">
+ <div class="pic"><img src="${p.img}" loading="lazy" alt="${p.name}">${(p.id===4||p.id===8)?'<span class="tag">NEW</span>':''}</div>
+ <div class="card-body"><h3>${p.name}</h3><div class="sub">${p.sub}</div><div class="price">${p.price} ج.م</div>
+ <div class="actions"><a class="details" href="#" onclick="openDetail(${p.id});return false">التفاصيل</a><button class="add" onclick="quickAdd(${p.id})">أضف للسلة</button></div></div>
+</div>`;
+}
+function renderProducts(){
+productsGrid.innerHTML=products.filter(p=>p.type==="تيشيرت").map(productCard).join("");
+pantsGrid.innerHTML=products.filter(p=>p.type==="جينز"||p.type==="ميلتون").map(productCard).join("");
+hoodiesGrid.innerHTML=products.filter(p=>p.type==="هودي").map(productCard).join("");
+sweatshirtsGrid.innerHTML=products.filter(p=>p.type==="سويت شيرت").map(productCard).join("");
+capsGrid.innerHTML=products.filter(p=>p.type==="كاب").map(productCard).join("");
+shoesGrid.innerHTML=products.filter(p=>p.type==="شوز").map(productCard).join("");
+}
+function quickAdd(id){let p=products.find(x=>x.id===id);cart.push({...p,size:"M"});save();toast()}
+function openDetail(id){current=products.find(x=>x.id===id);dSize="M";dColor=current.color;dImg.src=current.img;dName.textContent=current.name;dSub.textContent=current.sub;dPrice.textContent=current.price+" ج.م";dDesc.textContent=current.desc;
+sizes.innerHTML=["S","M","L","XL","XXL"].map(x=>`<button class="opt ${x===dSize?'active':''}" onclick="selectSize('${x}',this)">${x}</button>`).join("");
+const availableColors =
+ current.type==="جينز" ? ["أسود","أزرق","أزرق فاتح","رمادي"] :
+ current.type==="ميلتون" ? ["أسود","رمادي","بيج","كحلي"] :
+ current.type==="هودي" ? ["أسود","رمادي","كريمي"] :
+ current.type==="سويت شيرت" ? ["أسود","رمادي","كحلي"] :
+ current.type==="كاب" ? ["أسود","بيج","رمادي"] :
+ current.type==="شوز" ? ["أسود","أبيض","رمادي"] : ["أسود","أبيض"];
+dColor=current.color;
+colors.innerHTML=availableColors.map(x=>`<button class="opt ${x===dColor?'active':''}" onclick="selectColor('${x}',this)">${x}</button>`).join("");
+modal.classList.add("show")}
+function selectSize(x,e){dSize=x;document.querySelectorAll("#sizes .opt").forEach(a=>a.classList.remove("active"));e.classList.add("active")}
+function selectColor(x,e){dColor=x;document.querySelectorAll("#colors .opt").forEach(a=>a.classList.remove("active"));e.classList.add("active")}
+function addDetail(){cart.push({...current,size:dSize,color:dColor});save();closeDetail();toast()}
+function toast(){const t=document.getElementById("toast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+function save(){localStorage.setItem("astore_cart",JSON.stringify(cart));count.textContent=cart.length}
+function openCart(){renderCart();cartOverlay.classList.add("show")}
+function closeCart(){cartOverlay.classList.remove("show")}
+function closeDetail(){modal.classList.remove("show")}
+function removeItem(i){cart.splice(i,1);save();renderCart()}
+function renderCart(){
+ if(!cart.length)cartItems.innerHTML='<div class="empty">السلة لسه فاضية 🛍️<br>اختار تيشيرت يعجبك!</div>';
+ else cartItems.innerHTML=cart.map((x,i)=>`<div class="cart-item"><img class="mini" src="${x.img}"><div class="ci"><h4>${x.name}</h4><p>${x.size} • ${x.color}</p><b>${x.price} ج.م</b><br><button class="del" onclick="removeItem(${i})">حذف</button></div></div>`).join("");
+ let sum=cart.reduce((a,x)=>a+x.price,0);total.textContent=sum;
+ let msg="مرحباً A store 👋%0Aأريد طلب:%0A"+cart.map((x,i)=>`${i+1}- ${x.name} | مقاس ${x.size} | ${x.color} | ${x.price} ج.م`).join("%0A")+`%0A%0Aالإجمالي: ${sum} ج.م`;
+ waLink.href="https://wa.me/"+WHATSAPP_NUMBER+"?text="+msg;
+}
+renderProducts();save();
+</script>
+</body>
+</html>
